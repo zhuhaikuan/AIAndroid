@@ -110,6 +110,20 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+                implementation(libs.androidx.core.ktx)
+                implementation(libs.androidx.lifecycle.runtime.ktx)
+                implementation(libs.androidx.activity.compose)
+                implementation(project.dependencies.platform(libs.androidx.compose.bom))
+                implementation(libs.androidx.compose.ui)
+                implementation(libs.androidx.compose.ui.graphics)
+                implementation(libs.androidx.compose.ui.tooling.preview)
+                implementation(libs.androidx.compose.material3)
+                implementation(libs.junit)
+                implementation(libs.androidx.junit)
+                implementation(libs.androidx.espresso.core)
+                implementation(libs.androidx.compose.ui.test.junit4)
+                implementation(libs.androidx.compose.ui.tooling)
+                implementation(libs.androidx.compose.ui.test.manifest)
             }
         }
 
