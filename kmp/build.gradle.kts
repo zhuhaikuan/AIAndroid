@@ -133,8 +133,8 @@ kotlin {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.mockk)
-                implementation("org.mockito:mockito-core:5.23.0")
-                implementation("org.mockito.kotlin:mockito-kotlin:6.3.0")
+                implementation(libs.mockito.core)
+                implementation(libs.mockito.kotlin)
             }
         }
 
