@@ -96,6 +96,8 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+                //Google 官方推出的 Java/Kotlin 断言库，用于替代 JUnit 原生断言，让测试代码更易读、更简洁、报错信息更清晰，是 Android/Java 后端开发的主流测试库。
+                implementation(libs.truth)
             }
         }
 
@@ -137,6 +139,7 @@ kotlin {
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
+                implementation(libs.androidx.rules)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.junit)
                 implementation(libs.androidx.espresso.core)
