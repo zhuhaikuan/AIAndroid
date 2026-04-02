@@ -1,4 +1,4 @@
-package com.zhk.androidlearning.ui.theme
+package com.zhk.aiandroid.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
