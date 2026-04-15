@@ -1,26 +1,18 @@
 package com.zhk.aiandroid
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.android.options.UiAutomator2Options
 import junit.framework.TestCase.assertTrue
-import org.junit.Assert.assertEquals
+import okhttp3.OkHttpClient
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.net.URI
+import java.util.concurrent.TimeUnit
 
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-
-        val options = UiAutomator2Options()
-    }
+@RunWith(AndroidJUnit4::class)
+class MainActivityTest {
 
     @Test
     fun testAppiumClient() {
@@ -34,7 +26,7 @@ class ExampleUnitTest {
 
         // 使用 OkHttp 的 Appium 驱动
         val driver = AndroidDriver(
-            URI("http://10.109.165.102:4723").toURL(),
+            URI("http://10.46.56.203:4723").toURL(),
             options
         )
 
