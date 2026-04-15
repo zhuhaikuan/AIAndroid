@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.android.lint)
-    alias(libs.plugins.kotlin.compose)
+//    alias(libs.plugins.kotlin.compose)
 }
 
 kotlin {
@@ -68,21 +68,27 @@ kotlin {
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "kmpKit"
 
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
+//    iosX64 {
+//        binaries.framework {
+//            baseName = xcfName
+//        }
+//    }
+//
+//    iosArm64 {
+//        binaries.framework {
+//            baseName = xcfName
+//        }
+//    }
+//
+//    iosSimulatorArm64 {
+//        binaries.framework {
+//            baseName = xcfName
+//        }
+//    }
 
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+    jvm("desktop") {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 
@@ -98,6 +104,15 @@ kotlin {
                 // Add KMP dependencies here
                 //Google 官方推出的 Java/Kotlin 断言库，用于替代 JUnit 原生断言，让测试代码更易读、更简洁、报错信息更清晰，是 Android/Java 后端开发的主流测试库。
                 implementation(libs.truth)
+
+//                implementation(libs.androidx.compose.ui)
+//                implementation(libs.androidx.compose.ui.graphics)
+//                implementation(libs.androidx.compose.ui.tooling.preview)
+//                implementation(libs.androidx.compose.material3)
+//
+//                implementation(libs.androidx.compose.ui.test.junit4)
+//                implementation(libs.androidx.compose.ui.tooling)
+//                implementation(libs.androidx.compose.ui.test.manifest)
             }
         }
 
@@ -155,15 +170,46 @@ kotlin {
             }
         }
 
-        iosMain {
+//        iosMain {
+//            dependencies {
+//                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
+//                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
+//                // part of KMP’s default source set hierarchy. Note that this source set depends
+//                // on common by default and will correctly pull the iOS artifacts of any
+//                // KMP dependencies declared in commonMain.
+//            }
+//        }
+
+        val desktopMain by getting {
             dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.google.adk)
+
+//                implementation(libs.androidx.compose.ui)
+//                implementation(libs.androidx.compose.ui.graphics)
+//                implementation(libs.androidx.compose.ui.tooling.preview)
+//                implementation(libs.androidx.compose.material3)
+//
+//                implementation(libs.androidx.compose.ui.test.junit4)
+//                implementation(libs.androidx.compose.ui.tooling)
+//                implementation(libs.androidx.compose.ui.test.manifest)
             }
         }
+    }
+
+    // 创建运行任务
+    tasks.register<JavaExec>("runAgent") {
+        group = "application"
+        description = "Run Agent CLI Runner on Desktop"
+
+        val desktopCompilation = kotlin.targets.getByName("desktop")
+            .compilations.getByName("main")
+
+        classpath(desktopCompilation.output.allOutputs)
+        classpath(desktopCompilation.runtimeDependencyFiles)
+
+        mainClass.set("com.zhk.kmp.AgentCliRunnerKt")
+        standardInput = System.`in`
     }
 
 }

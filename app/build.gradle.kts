@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.zhk.aiandroid"
-        minSdk = 26
+        minSdk = 34
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -60,4 +60,7 @@ dependencies {
     //add automator test appium client
     testImplementation(libs.java.client)
     androidTestImplementation(libs.java.client)
+
+    androidTestImplementation(libs.okhttp)
+    androidTestImplementation(libs.logging.interceptor)
 }
