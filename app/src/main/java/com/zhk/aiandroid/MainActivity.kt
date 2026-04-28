@@ -53,5 +53,29 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
         ) {
             Text(text = "Click Me")
         }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
+            onClick = { SensorActivity.start(context) }
+        ) {
+            Text(text = "Sensors Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
+            onClick = { LocationActivity.start(context) }
+        ) {
+            Text(text = "Location Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
+            onClick = { NotificationActivity.start(context) }
+        ) {
+            Text(text = "Notification Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
+            onClick = { AppinfoActivity.start(context) }
+        ) {
+            Text(text = "AppInfo Demo")
+        }
     }
 }

@@ -2,7 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 基础定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于网络定位 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 声明使用 GPS 硬件 -->
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <!-- Android 13+ 需要通知权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 查询所有已安装应用的权限（Android 11+） -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="PackageVisibilityPolicy,QueryAllPackagesPermission" />
+
+    <!-- 包可见性声明：允许查询所有可启动的应用 -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -13,8 +33,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AIAndroid">
+        <service
+            android:name=".MyNotificationListenerService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <activity
-            android:name="com.zhk.aiandroid.MainActivity"
+            android:name=".LocationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_location"
+            android:theme="@style/Theme.AIAndroid" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/Theme.AIAndroid" />
+        <activity
+            android:name=".AppinfoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_appinfo"
+            android:theme="@style/Theme.AIAndroid" />
+        <activity
+            android:name=".SensorActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sensor"
+            android:theme="@style/Theme.AIAndroid" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AIAndroid">

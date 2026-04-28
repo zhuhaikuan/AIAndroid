@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AIAndroid</string>
+    <string name="title_activity_sensor">SensorActivity</string>
+    <string name="title_activity_location">LocationActivity</string>
+    <string name="title_activity_appinfo">AppinfoActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
 </resources>
