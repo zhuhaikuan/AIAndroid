@@ -2,12 +2,10 @@ package com.zhk.aiandroid
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zhk.aiandroid.ui.theme.AIAndroidTheme
 
@@ -55,9 +52,9 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
         }
         Button(
             modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
-            onClick = { SensorActivity.start(context) }
+            onClick = { SMSActivity.start(context) }
         ) {
-            Text(text = "Sensors Demo")
+            Text(text = "SMS Demo")
         }
         Button(
             modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
@@ -76,6 +73,12 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
             onClick = { AppinfoActivity.start(context) }
         ) {
             Text(text = "AppInfo Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ClickMeButton"),
+            onClick = { CalendarActivity.start(context) }
+        ) {
+            Text(text = "Calendar Demo")
         }
     }
 }
