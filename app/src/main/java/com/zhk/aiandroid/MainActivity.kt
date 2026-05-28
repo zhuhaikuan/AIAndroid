@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AIAndroidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(Modifier.padding(innerPadding))
+                    MainScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -37,8 +37,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
     Column(
-        modifier = modifier.fillMaxSize().padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier
+            .fillMaxSize()
+            .padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             modifier = Modifier.padding(16.dp),
@@ -79,6 +81,12 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
             onClick = { CalendarActivity.start(context) }
         ) {
             Text(text = "Calendar Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("DataStoreDemoEntryButton"),
+            onClick = { DataStoreDemoActivity.start(context) }
+        ) {
+            Text(text = "DataStore Demo")
         }
     }
 }
