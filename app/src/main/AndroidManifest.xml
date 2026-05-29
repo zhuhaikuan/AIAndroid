@@ -85,6 +85,11 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.AIAndroid" />
         <activity
+            android:name=".RoomDemoActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AIAndroid" />
+        <activity
             android:name=".FlowDemoActivity"
             android:exported="false"
             android:label="@string/app_name"
