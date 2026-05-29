@@ -100,5 +100,11 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
         ) {
             Text(text = "Flow Demo")
         }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("CoroutineDemoEntryButton"),
+            onClick = { CoroutineDemoActivity.start(context) }
+        ) {
+            Text(text = "Coroutine Demo")
+        }
     }
 }
