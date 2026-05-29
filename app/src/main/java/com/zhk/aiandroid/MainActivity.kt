@@ -88,5 +88,11 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
         ) {
             Text(text = "DataStore Demo")
         }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("FlowDemoEntryButton"),
+            onClick = { FlowDemoActivity.start(context) }
+        ) {
+            Text(text = "Flow Demo")
+        }
     }
 }
