@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -39,6 +41,7 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -105,6 +108,12 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
             onClick = { CoroutineDemoActivity.start(context) }
         ) {
             Text(text = "Coroutine Demo")
+        }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("McpDemoEntryButton"),
+            onClick = { McpDemoActivity.start(context) }
+        ) {
+            Text(text = "MCP Demo")
         }
     }
 }

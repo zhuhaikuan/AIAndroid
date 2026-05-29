@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":datastore"))
     implementation(project(":flow"))
     implementation(project(":coroutine"))
+    implementation(project(":mcp"))
     implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
