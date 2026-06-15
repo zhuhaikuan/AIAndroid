@@ -13,7 +13,7 @@ import com.lenovo.contentprovider.sqlite.DBHelper
  *
  * URI 与 [CustomContentProvider] 保持一致，见 [usersContentUri]。
  */
-class MyContentResolver(private val context: Context) {
+class CustomContentResolver(private val context: Context) {
 
     private val contentResolver: ContentResolver
         get() = context.contentResolver
@@ -110,12 +110,12 @@ class MyContentResolver(private val context: Context) {
     }
 }
 
-private fun Cursor.readUserRow(): MyContentResolver.UserRow {
+private fun Cursor.readUserRow(): CustomContentResolver.UserRow {
     val idIdx = getColumnIndexOrThrow(DBHelper.COLUMN_USER_ID)
     val nameIdx = getColumnIndex(DBHelper.COLUMN_USER_NAME)
     val emailIdx = getColumnIndex(DBHelper.COLUMN_USER_EMAIL)
     val ageIdx = getColumnIndex(DBHelper.COLUMN_USER_AGE)
-    return MyContentResolver.UserRow(
+    return CustomContentResolver.UserRow(
         id = getLong(idIdx),
         name = if (nameIdx >= 0 && !isNull(nameIdx)) getString(nameIdx) else null,
         email = if (emailIdx >= 0 && !isNull(emailIdx)) getString(emailIdx) else null,

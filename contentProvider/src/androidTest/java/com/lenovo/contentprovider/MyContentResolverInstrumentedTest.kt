@@ -14,17 +14,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * 在真机/模拟器上验证 [MyContentResolver] 对 [CustomContentProvider] 的调用。
+ * 在真机/模拟器上验证 [CustomContentResolver] 对 [CustomContentProvider] 的调用。
  */
 @RunWith(AndroidJUnit4::class)
 class MyContentResolverInstrumentedTest {
 
-    private lateinit var resolver: MyContentResolver
+    private lateinit var resolver: CustomContentResolver
 
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        resolver = MyContentResolver(context)
+        resolver = CustomContentResolver(context)
         clearUsers()
     }
 

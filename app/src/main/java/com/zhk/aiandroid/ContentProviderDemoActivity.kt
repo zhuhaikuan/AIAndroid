@@ -20,8 +20,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lenovo.contentprovider.CustomContentObserver
 import com.lenovo.contentprovider.CustomContentProvider
 import com.lenovo.contentprovider.sqlite.DBHelper
 import com.zhk.aiandroid.ui.theme.AIAndroidTheme
@@ -39,7 +42,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * 使用 [android.content.ContentResolver] 调用 [CustomContentProvider] 暴露的 `users` 表能力。
+ * 使用 [android.content.ContentResolver] 调用 [CustomContentProvider] 暴露的 `users` 表能力；
+ * 通过 [CustomContentObserver] 监听 [android.content.ContentResolver.notifyChange]，数据变更后自动刷新列表。
  */
 class ContentProviderDemoActivity : ComponentActivity() {
 
@@ -77,6 +81,8 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
     val scope = rememberCoroutineScope()
     var users by remember { mutableStateOf<List<UserListItem>>(emptyList()) }
     var status by remember { mutableStateOf("") }
+    var observerCallbackCount by remember { mutableIntStateOf(0) }
+    var lastNotifyUri by remember { mutableStateOf<String?>(null) }
 
     fun loadUsers() {
         scope.launch(Dispatchers.IO) {
@@ -120,6 +126,23 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
 
     LaunchedEffect(Unit) { loadUsers() }
 
+    DisposableEffect(context.contentResolver) {
+        val uri = CustomContentProvider.CONTENT_URI
+        val observer = CustomContentObserver { selfChange, changedUri ->
+            observerCallbackCount++
+            lastNotifyUri = when {
+                changedUri != null -> changedUri.toString()
+                selfChange -> "(selfChange)"
+                else -> "(no uri)"
+            }
+            loadUsers()
+        }
+        context.contentResolver.registerContentObserver(uri, true, observer)
+        onDispose {
+            context.contentResolver.unregisterContentObserver(observer)
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -136,7 +159,11 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
             text = "authority: ${CustomContentProvider.AUTHORITY}",
             modifier = Modifier.padding(bottom = 4.dp),
         )
-        Text(text = status, modifier = Modifier.padding(bottom = 12.dp))
+        Text(text = status, modifier = Modifier.padding(bottom = 8.dp))
+        Text(
+            text = "ContentObserver 回调: $observerCallbackCount 次，上次 URI: ${lastNotifyUri ?: "—"}",
+            modifier = Modifier.padding(bottom = 12.dp),
+        )
 
         Button(
             onClick = {
@@ -151,9 +178,8 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
                         values,
                     )
                     withContext(Dispatchers.Main) {
-                        status = if (inserted != null) "已插入: $inserted" else "插入失败"
+                        status = if (inserted != null) "已插入: $inserted（列表由 Observer 刷新）" else "插入失败"
                     }
-                    loadUsers()
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -180,8 +206,7 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
                     val first = users.first()
                     val rowUri = ContentUris.withAppendedId(CustomContentProvider.CONTENT_URI, first.id)
                     val n = context.contentResolver.delete(rowUri, null, null)
-                    withContext(Dispatchers.Main) { status = "已删除 $n 条（首行 id=${first.id}）" }
-                    loadUsers()
+                    withContext(Dispatchers.Main) { status = "已删除 $n 条（首行 id=${first.id}，Observer 将刷新）" }
                 }
             },
             modifier = Modifier
@@ -199,8 +224,7 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
                         null,
                         null,
                     )
-                    withContext(Dispatchers.Main) { status = "已清空 $n 条" }
-                    loadUsers()
+                    withContext(Dispatchers.Main) { status = "已清空 $n 条（Observer 将刷新）" }
                 }
             },
             modifier = Modifier
@@ -222,8 +246,7 @@ private fun ContentProviderDemoScreen(modifier: Modifier) {
                         }
                         val rowUri = ContentUris.withAppendedId(CustomContentProvider.CONTENT_URI, u.id)
                         val n = context.contentResolver.update(rowUri, values, null, null)
-                        withContext(Dispatchers.Main) { status = "已更新 $n 条（id=${u.id}）" }
-                        loadUsers()
+                        withContext(Dispatchers.Main) { status = "已更新 $n 条（id=${u.id}，Observer 将刷新）" }
                     }
                 },
                 modifier = Modifier

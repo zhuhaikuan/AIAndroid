@@ -60,8 +60,8 @@ class CustomContentProvider : ContentProvider() {
         val id = helper.writableDatabase.insert(DBHelper.TABLE_USERS, null, values)
         if (id == -1L) return null
         val rowUri = ContentUris.withAppendedId(CONTENT_URI, id)
+        // 只 notify 一次：同时 notify 行 URI 与集合 URI 会让 registerContentObserver(集合, notifyDescendants=true) 收到两次回调
         context?.contentResolver?.notifyChange(rowUri, null)
-        context?.contentResolver?.notifyChange(CONTENT_URI, null)
         return rowUri
     }
 
@@ -81,7 +81,6 @@ class CustomContentProvider : ContentProvider() {
         val count = db.update(DBHelper.TABLE_USERS, values, sel, args)
         if (count > 0) {
             context?.contentResolver?.notifyChange(uri, null)
-            context?.contentResolver?.notifyChange(CONTENT_URI, null)
         }
         return count
     }
@@ -97,7 +96,6 @@ class CustomContentProvider : ContentProvider() {
         val count = db.delete(DBHelper.TABLE_USERS, sel, args)
         if (count > 0) {
             context?.contentResolver?.notifyChange(uri, null)
-            context?.contentResolver?.notifyChange(CONTENT_URI, null)
         }
         return count
     }
