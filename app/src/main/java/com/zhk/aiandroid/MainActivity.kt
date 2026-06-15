@@ -115,5 +115,11 @@ fun MainScreen(modifier: Modifier, context: Context = LocalContext.current) {
         ) {
             Text(text = "MCP Demo")
         }
+        Button(
+            modifier = Modifier.padding(16.dp).testTag("ContentProviderDemoEntryButton"),
+            onClick = { ContentProviderDemoActivity.start(context) }
+        ) {
+            Text(text = "ContentProvider Demo（ContentResolver）")
+        }
     }
 }
